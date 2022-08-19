@@ -18,6 +18,7 @@ def solveMaze(maze: List[List[str]]) -> Union[int, None]:
     directions: List[List[int]] = [[0, 1], [0, -1], [1, 0], [-1, 0]]
     visited: List[List[bool]] = [[False] * C for _ in range(R)]
 
+    """ -------- RECURSION BASE SOLUTION -------- """
     answer: List[int] = []
     def solve(maze: List[List[str]], location:Tuple[int, int], count: int) -> None:
         # print(count)
@@ -34,7 +35,7 @@ def solveMaze(maze: List[List[str]]) -> Union[int, None]:
                 solve(maze, (nr, nc), count+1)
 
     solve(maze, location, 0)
-    return answer[0]
+    return min(answer)
             
 
 mymaze = [
