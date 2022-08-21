@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const BattleShip = (props) => {
-
-
     return (
         <div className="battleship">
             { 

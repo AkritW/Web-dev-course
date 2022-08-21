@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = useState()
 
   useEffect(() => {
-    fetch("/player1").then(
+    fetch("/api/player1").then(
       res => res.json()
     )
     .then(
