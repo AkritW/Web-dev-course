@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import BattleShip from './BattleShip';
+import './App.css';
 
 function App() {
-  const [data, setData] = useState([{}])
+  const [data, setData] = useState()
 
   useEffect(() => {
-    fetch("/members").then(
+    fetch("/player1").then(
       res => res.json()
-    ).then(
+    )
+    .then(
       data => {
-        setData(data);
-        console.log(data);
+        setData(data.board);
       }
     )
+    .catch(e => {
+      console.log(e)
+    })
   }, [])
 
   return (
     <div>
-      <h1>{ data && data.members.map(member => {
-        return <li>{ member }</li>
-      })}</h1>
+      <BattleShip data={data} callBack={setData} />
     </div>
   );
 }
