@@ -1,3 +1,4 @@
+from curses.ascii import isupper
 from typing import *
 import random
 from pprint import pprint
@@ -14,7 +15,7 @@ class BattleShip:
     size : Tuple[int, int]
         a size of the ocean or the board
     board: List[List[str]
-        a board or ocean
+        a board or an ocean
         '.' indicates an empty space
         ',' indicates shot on an empty space
         'a-s' indicates a carrier
@@ -38,8 +39,12 @@ class BattleShip:
         print out the board
     getBoard()
         return the board
+    resetBoard()
+        reset the board
     shoot(coord: Tuple[int, int]) -> bool
         shoot out according the the coords and return shot status
+    refreshGameStatus()
+        check if game has ended and refresh the status
     """
     def __init__(self, size: Tuple[int, int]) -> None:
         """
@@ -203,6 +208,11 @@ class BattleShip:
         """print out the board
         """
         pprint(self.board)
+    
+    def resetBoard(self) -> None:
+        """reset the board
+        """
+        self.__init__(self.size)
         
     def shoot(self, coord: Tuple[int, int]) -> bool:
         """shoot out according the the coords and return shot status
@@ -217,7 +227,7 @@ class BattleShip:
         bool
             True if shot, otherwise False
         """
-        x, y = coord
+        y, x = coord
         if self.board[y][x] == '.':
             self.board[y][x] = ','
             return False
@@ -229,8 +239,27 @@ class BattleShip:
         elif self.board[y][x].isupper():
             return False
         else:
-            raise(ValueError("Value on the specific coord on the board is corrupted"))
-                        
+            raise(ValueError("Value on the specific coord on the board is corrupted")) 
+
+    def refreshGameStatus(self):
+        """check if game has ended and refresh the status
+        """
+        def isEnded(board):
+            """_summary_
+
+            Parameters
+            ----------
+            board : List[List[str]]
+                a board or an ocean
+            """
+            for row in board:
+                for element in row:
+                    if element.islower():
+                        return False
+            return True
+        if isEnded(self.board):
+            self.board = [['#' for _ in row] for row in self.board]
+
 
 if __name__ == '__main__':
     # initializing battleship class on 10x10 matrix
