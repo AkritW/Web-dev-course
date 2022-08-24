@@ -267,7 +267,7 @@ if __name__ == '__main__':
 
     # add carriers
     battleShip.addCarrier('aaaaa')
-    battleShip.addCarrier('bbbbbb')
+    battleShip.addCarrier('bbbbb')
     battleShip.addCarrier('ccc')
     battleShip.addCarrier('dd')
     battleShip.addCarrier('sss')
