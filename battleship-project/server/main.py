@@ -109,13 +109,15 @@ def player1shoot():
 
 @app.route("/player2/shoot", methods=["POST"])
 def player2shoot():
-    print('hi')
+    # receive data
+    req = json.loads(request.data)
+    y, x = req["coord"][0], req["coord"][1]
 
     # get other's battleship from storage
     battleShip: BattleShip = storage["BattleShip1"]
 
     # shoot
-    battleShip.shoot((0,0))
+    battleShip.shoot((y, x))
     battleShip.board = battleShip.getBoard()
 
     # refresh game status
