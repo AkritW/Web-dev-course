@@ -1,4 +1,3 @@
-from curses.ascii import isupper
 from typing import *
 import random
 from pprint import pprint
