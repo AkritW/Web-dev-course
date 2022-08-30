@@ -7,6 +7,9 @@
 
 ## Battleship Project
 
+### First Time or Encounter an Error?
+> cd battleship-project/client/ && npm install
+
 ### Start Backend Server (Flask) by
 > cd battleship-project/server/ && python3 main.py
 
