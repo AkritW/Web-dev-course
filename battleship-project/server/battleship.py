@@ -38,6 +38,8 @@ class BattleShip:
         print out the board
     getBoard()
         return the board
+    countMarket()
+        count the number of given marker on the board
     resetBoard()
         reset the board
     shoot(coord: Tuple[int, int]) -> bool
@@ -192,6 +194,27 @@ class BattleShip:
 
             if not carrierIsPlaced:
                 raise(StopIteration("Can't find position to place carrier after 1000 tries"))
+
+    def countMarker(self, marker: str) -> int:
+        """count the number of given marker on the board
+
+        Parameters
+        ----------
+        marker : str
+            element on the board
+
+        Returns
+        -------
+        int
+            number of marker on the board
+        """
+        count = 0
+        for row in self.board:
+            for element in row:
+                if marker == element:
+                    count += 1
+
+        return count
 
     def getBoard(self) -> List[List[str]]:
         """return the board
