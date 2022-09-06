@@ -1,6 +1,9 @@
+from curses.ascii import islower
+from errno import ENEEDAUTH
 from typing import *
 import random
 from pprint import pprint
+import copy
 
 
 class BattleShip:
@@ -42,8 +45,12 @@ class BattleShip:
         count the number of given marker on the board
     resetBoard()
         reset the board
-    shoot(coord: Tuple[int, int]) -> bool
+    fireCoords(coord: Tuple[int, int]) -> bool
         shoot out according the the coords and return shot status
+    sinkFleet()
+        run fireCoords on all position
+    getFoggyOcean()
+        return blue ocean
     refreshGameStatus()
         check if game has ended and refresh the status
     """
@@ -236,7 +243,7 @@ class BattleShip:
         """
         self.__init__(self.size)
         
-    def shoot(self, coord: Tuple[int, int]) -> bool:
+    def fireCoords(self, coord: Tuple[int, int]) -> bool:
         """shoot out according the the coords and return shot status
 
         Parameters
@@ -262,6 +269,22 @@ class BattleShip:
             return False
         else:
             raise(ValueError("Value on the specific coord on the board is corrupted")) 
+
+    def sinkFleet(self):
+        """runs fireCoords on all position
+        """
+        for i, row in enumerate(self.board):
+            for j, _ in enumerate(row):
+                self.fireCoords((i, j))
+
+    def getFoggyOcean(self):
+        """return blur ocean
+        """
+        boardCopy = copy.deepcopy(self.board)
+        for i, _ in enumerate(boardCopy):
+            for j, _ in enumerate(boardCopy[i]):
+                if boardCopy[i][j].islower():
+                    element = "-"
 
     def refreshGameStatus(self):
         """check if game has ended and refresh the status
