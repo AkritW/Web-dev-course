@@ -275,14 +275,15 @@ class BattleShip:
             for j, _ in enumerate(row):
                 self.fireCoords((i, j))
 
-    def getFoggyOcean(self):
+    def getFoggyOcean(self) -> List[List[str]]:
         """return blur ocean
         """
         boardCopy = copy.deepcopy(self.board)
         for i, _ in enumerate(boardCopy):
             for j, _ in enumerate(boardCopy[i]):
-                if boardCopy[i][j].islower():
-                    element = "-"
+                if not boardCopy[i][j].isupper() and not boardCopy[i][j] == ",":
+                    boardCopy[i][j] = "-"
+        return boardCopy
 
     def refreshGameStatus(self):
         """check if game has ended and refresh the status
