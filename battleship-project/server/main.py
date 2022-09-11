@@ -98,7 +98,7 @@ def player1shoot():
     battleShip: BattleShip = storage["BattleShip2"]
 
     # shoot
-    battleShip.shoot((y, x))
+    battleShip.fireCoords((y, x))
     battleShip.board = battleShip.getBoard()
 
     # refresh game status
@@ -117,7 +117,7 @@ def player2shoot():
     battleShip: BattleShip = storage["BattleShip1"]
 
     # shoot
-    battleShip.shoot((y, x))
+    battleShip.fireCoords((y, x))
     battleShip.board = battleShip.getBoard()
 
     # refresh game status
