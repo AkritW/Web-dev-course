@@ -1,5 +1,3 @@
-from curses.ascii import islower
-from errno import ENEEDAUTH
 from typing import *
 import random
 from pprint import pprint
