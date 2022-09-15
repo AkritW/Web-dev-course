@@ -126,6 +126,28 @@ def player2shoot():
     # return the board
     return { "board": battleShip.getBoard() }
 
+@app.route("/player1/sinkFleet")
+def player1sinkFleet():
+    # get other's battleship from storage
+    battleShip: BattleShip = storage["BattleShip2"]
+
+    # get count that sink fleet
+    count = battleShip.sinkFleet()
+
+    # return status message
+    return { "status": f"I sank your fleet in ${count} rounds" }
+
+@app.route("/player2/sinkFleet")
+def player2sinkFleet():
+    # get other's battleship from storage
+    battleShip: BattleShip = storage["BattleShip2"]
+
+    # get count that sink fleet
+    count = battleShip.sinkFleet()
+
+    # return status message
+    return { "status": f"I sank your fleet in ${count} rounds" }
+
 @app.route("/test")
 def test():
     return { "status": "Hello World!" }

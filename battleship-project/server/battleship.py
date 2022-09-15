@@ -45,10 +45,12 @@ class BattleShip:
         reset the board
     fireCoords(coord: Tuple[int, int]) -> bool
         shoot out according the the coords and return shot status
-    sinkFleet()
+    sinkFleet() -> int
         run fireCoords on all position
     getFoggyOcean()
         return blue ocean
+    isEnded() -> bool
+        check if the game has ended
     refreshGameStatus()
         check if game has ended and refresh the status
     """
@@ -268,12 +270,17 @@ class BattleShip:
         else:
             raise(ValueError("Value on the specific coord on the board is corrupted")) 
 
-    def sinkFleet(self):
+    def sinkFleet(self) -> int:
         """runs fireCoords on all position
         """
-        for i, row in enumerate(self.board):
-            for j, _ in enumerate(row):
-                self.fireCoords((i, j))
+        c = 0
+        for i, _ in enumerate(self.board):
+            for j, _ in enumerate(self.board[i]):
+                c += 1
+                if self.fireCoords((i, j)):
+                    if self.isEnded():
+                        return c
+        raise(RuntimeError("Error the game is corrupted"))
 
     def getFoggyOcean(self) -> List[List[str]]:
         """return blur ocean
@@ -285,23 +292,19 @@ class BattleShip:
                     boardCopy[i][j] = "-"
         return boardCopy
 
+    def isEnded(self) -> bool:
+        """check if the game has ended
+        """
+        for row in self.board:
+            for element in row:
+                if element.islower():
+                    return False
+        return True
+
     def refreshGameStatus(self):
         """check if game has ended and refresh the status
         """
-        def isEnded(board):
-            """_summary_
-
-            Parameters
-            ----------
-            board : List[List[str]]
-                a board or an ocean
-            """
-            for row in board:
-                for element in row:
-                    if element.islower():
-                        return False
-            return True
-        if isEnded(self.board):
+        if self.isEnded():
             self.board = [['#' for _ in row] for row in self.board]
 
 
