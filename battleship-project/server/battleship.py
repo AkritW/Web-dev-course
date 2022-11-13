@@ -26,6 +26,8 @@ class BattleShip:
         number to keep track of the turns
     isUserTurn : bool
         boolean value to check if it is user's turn
+    battleships : List[Tuple[str, List[Tuple[int, int]]]]
+        battleships with their respective coords
 
     Methods
     -------
@@ -66,6 +68,7 @@ class BattleShip:
         self.carriers: List[str] = []
         self.turnCount: int = 0
         self.isUserTurn: bool = False
+        self.battleships: List[Tuple[str, List[Tuple[int, int]]]] = []
     
     def createEmptyOcean(self) -> None:
         """create an empty board for the user to play
@@ -143,7 +146,7 @@ class BattleShip:
             else:
                 return False
 
-        def place(carrier: str) -> bool:
+        def place(carrier: str) -> Union[Tuple[str, List[Tuple[int, int]]], None]:
             """place carrier to the board
 
             Parameters
@@ -153,8 +156,8 @@ class BattleShip:
 
             Returns
             -------
-            bool
-                True if was placed, otherwise False 
+            Tuple[str, List[Tuple[int, int]]] | None
+                Coords that were place
 
             Raises
             ------
@@ -180,23 +183,24 @@ class BattleShip:
                 for i, position in enumerate(carrier):
                     # place each position (letter)
                     self.board[y][x+i] = position
-                return True
+                return (carrier, [(y, x+i) for i in range(len(carrier))])
             elif rotation == 1 and canPlaceVertical(x, y, self.size, carrierLength):
                 # place vertical
                 for i, position in enumerate(carrier):
                     # place each position (letter)
                     self.board[y+i][x] = position
-                return True
+                return (carrier, [(y, x+i) for i in range(len(carrier))])
             else:
                 # cant place any
-                return False
+                return None
 
         for carrier in self.carriers:
             # try placing 1000 times
-            carrierIsPlaced: bool = False
+            carrierIsPlaced:  Union[Tuple[str, List[Tuple[int, int]]], None] = None
             for _ in range(1000):
-                carrierIsPlaced= place(carrier)
+                carrierIsPlaced = place(carrier)
                 if carrierIsPlaced:
+                    self.battleships.append(carrierIsPlaced)
                     break
 
             if not carrierIsPlaced:
@@ -307,6 +311,15 @@ class BattleShip:
         if self.isEnded():
             self.board = [['#' for _ in row] for row in self.board]
 
+    def getBattleships(self) -> List[Tuple[str, List[Tuple[int, int]]]]:
+        """get battleships
+
+        Returns
+        -------
+        List[Tuple[str, List[Tuple[int, int]]]]
+            battleships with their respective coords
+        """
+        return self.battleships
 
 if __name__ == '__main__':
     # initializing battleship class on 10x10 matrix
@@ -327,3 +340,5 @@ if __name__ == '__main__':
 
     # print the board matrix out
     battleShip.printBoard()
+
+    print(battleShip.getBattleships())

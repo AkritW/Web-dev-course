@@ -140,13 +140,29 @@ def player1sinkFleet():
 @app.route("/player2/sinkFleet")
 def player2sinkFleet():
     # get other's battleship from storage
-    battleShip: BattleShip = storage["BattleShip2"]
+    battleShip: BattleShip = storage["BattleShip1"]
 
     # get count that sink fleet
     count = battleShip.sinkFleet()
 
     # return status message
     return { "status": f"I sank your fleet in ${count} rounds" }
+
+@app.route("/player1/getShipStatus")
+def player1getShipStatus():
+    # get battleship from storage
+    battleShip: BattleShip = storage["BattleShip1"]
+
+    # return ship status
+    return { "battleShipStatus": battleShip.getBattleships() }
+
+@app.route("/player2/getShipStatus")
+def player2getShipStatus():
+    # get battleship from storage
+    battleShip: BattleShip = storage["BattleShip2"]
+
+    # return ship status
+    return { "battleShipStatus": battleShip.getBattleships() }
 
 @app.route("/test")
 def test():
