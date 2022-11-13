@@ -1,92 +1,92 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Box, Button, Heading } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { Box, Button, Heading } from "@chakra-ui/react"
 
 const BattleShip = (props) => {
   const isReady = (): boolean => {
     if (props.player == 1) {
-      return props.gameState.player1ready;
+      return props.gameState.player1ready
     } else if (props.player == 2) {
-      return props.gameState.player2ready;
+      return props.gameState.player2ready
     } else {
-      console.error("Error player in isReady is not player 1 or player 2");
-      return false;
+      console.error("Error player in isReady is not player 1 or player 2")
+      return false
     }
-  };
+  }
 
   const handleIsReady = () => {
     props.gameDispatch({
       type: `SET_PLAYER_${props.player}_READY`,
       payload: !isReady(),
-    });
-  };
+    })
+  }
 
   const getPrettyBoard = (): Array<Array<string>> => {
     const prettierElement = (element: string, ready: boolean) => {
       if (ready) {
         switch (element) {
           case ".":
-            return " ";
+            return " "
           case ",":
-            return "🌊";
+            return "🌊"
           case "#":
-            return "👏";
+            return "👏"
           case element.toLowerCase():
-            return " ";
+            return " "
           case element.toUpperCase():
-            return "💥";
+            return "💥"
           default:
-            return element;
+            return element
         }
       } else {
         switch (element) {
           case ".":
-            return " ";
+            return " "
           case ",":
-            return "🌊";
+            return "🌊"
           case "#":
-            return "👏";
+            return "👏"
           case element.toLowerCase():
-            return "🛳️";
+            return "🛳️"
           case element.toUpperCase():
-            return "💥";
+            return "💥"
           default:
-            return element;
+            return element
         }
       }
-    };
+    }
 
     const getBoard = () => {
       if (
         (props.player == 1 && !props.gameState.player1ready) ||
         (props.player == 2 && props.gameState.player2ready)
       ) {
-        return props.gameState.player1board;
+        return props.gameState.player1board
       } else if (
         (props.player == 1 && props.gameState.player1ready) ||
         (props.player == 2 && !props.gameState.player2ready)
       ) {
-        return props.gameState.player2board;
+        return props.gameState.player2board
       } else {
-        console.error("Error: board state is not an accepted value");
+        console.error("Error: board state is not an accepted value")
       }
-    };
+    }
 
-    const board = getBoard();
-    const ready = isReady();
+    const board = getBoard()
+    const ready = isReady()
     const prettyBoard = board.map((row) => {
       return row.map((element) => {
-        return prettierElement(element, ready);
-      });
-    });
+        return prettierElement(element, ready)
+      })
+    })
 
-    return prettyBoard;
-  };
+    return prettyBoard
+  }
 
   const handleShoot = ([y, x]) => {
     const inv = (player) => {
-      return player == 1 ? 2 : 1;
-    };
+      return player == 1 ? 2 : 1
+    }
 
     if (isReady()) {
       fetch(`/api/player${props.player}/shoot`, {
@@ -94,39 +94,39 @@ const BattleShip = (props) => {
         body: JSON.stringify({ coord: [y, x] }),
       })
         .then((res) => {
-          return res.json();
+          return res.json()
         })
         .then((data) => {
           props.gameDispatch({
             type: `SET_PLAYER_${inv(props.player)}_BOARD`,
             payload: data,
-          });
-        });
+          })
+        })
     }
-  };
+  }
 
   const randomlyPlace = () => {
     fetch(`/api/player${props.player}/randomlyPlace`)
       .then((res) => {
-        return res.json();
+        return res.json()
       })
       .then((data) => {
         props.gameDispatch({
           type: `SET_PLAYER_${props.player}_BOARD`,
           payload: data,
-        });
-      });
-  };
+        })
+      })
+  }
 
   const getShipStatus = () => {
     fetch(`/api/player${props.player}/getShipStatus`)
       .then((res) => {
-        return res.json();
+        return res.json()
       })
       .then((data) => {
-        console.log(data);
-      });
-  };
+        console.log(data)
+      })
+  }
 
   return (
     <Box
@@ -158,10 +158,10 @@ const BattleShip = (props) => {
                   >
                     {element}
                   </Box>
-                );
+                )
               })}
             </Box>
-          );
+          )
         })}
       </Box>
 
@@ -182,7 +182,7 @@ const BattleShip = (props) => {
         </Button>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default BattleShip;
+export default BattleShip
